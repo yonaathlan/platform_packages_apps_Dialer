@@ -376,7 +376,11 @@ public class StatusBarNotifier
     if (callState == DialerCallState.INCOMING
         || callState == DialerCallState.CALL_WAITING
         || isVideoUpgradeRequest) {
-      if (ConfigProviderComponent.get(context)
+      if (callState == DialerCallState.CALL_WAITING) {
+        // Call waiting must present an interactive heads-up/incoming notification
+        // so the user can answer, hold, or swap calls.
+        notificationType = NOTIFICATION_INCOMING_CALL;
+      } else if (ConfigProviderComponent.get(context)
           .getConfigProvider()
           .getBoolean("quiet_incoming_call_if_ui_showing", true)) {
         notificationType =
